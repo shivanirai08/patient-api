@@ -26,3 +26,15 @@ def get_by_id(patient_id : str):
         raise HTTPException(status_code = 404, detail = "Patient not found")
 
 
+@app.get("/sort")
+def sort_all(sort_by : str, order : str = "asc"):
+    patients = load_patients();
+    type = ['name','age','height','weight','bmi'];
+    if sort_by not in type:
+        raise HTTPException(status_code = 400, detail = "Invalid sort type")
+    if order not in ['asc', 'desc']:
+        raise HTTPException(status_code = 400, detail = "Invalid order type")
+    sorted_patients = sorted(patients.items(), key = lambda x : x[1][sort_by], reverse = order=='desc')
+    return sorted_patients;
+
+@app.post("/patients")
