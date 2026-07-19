@@ -1,0 +1,112 @@
+{
+    "P001": {
+      "id": "P001",
+      "name": "Ananya Sharma",
+      "city": "Guwahati",
+      "age": 28,
+      "gender": "female",
+      "height": 1.65,
+      "weight": 90.0,
+      "bmi": 33.06,
+      "verdict": "Obese"
+    },
+    "P002": {
+      "id": "P002",
+      "name": "Ravi Mehta",
+      "city": "Mumbai",
+      "age": 35,
+      "gender": "male",
+      "height": 1.75,
+      "weight": 85.0,
+      "bmi": 27.76,
+      "verdict": "Overweight"
+    },
+    "P003": {
+      "id": "P003",
+      "name": "Priya Singh",
+      "city": "Delhi",
+      "age": 24,
+      "gender": "female",
+      "height": 1.60,
+      "weight": 52.0,
+      "bmi": 20.31,
+      "verdict": "Normal"
+    },
+    "P004": {
+      "id": "P004",
+      "name": "Arjun Verma",
+      "city": "Bengaluru",
+      "age": 31,
+      "gender": "male",
+      "height": 1.82,
+      "weight": 78.0,
+      "bmi": 23.55,
+      "verdict": "Normal"
+    },
+    "P005": {
+      "id": "P005",
+      "name": "Sneha Kapoor",
+      "city": "Pune",
+      "age": 27,
+      "gender": "female",
+      "height": 1.68,
+      "weight": 48.0,
+      "bmi": 17.01,
+      "verdict": "Underweight"
+    },
+    "P006": {
+      "id": "P006",
+      "name": "Karan Malhotra",
+      "city": "Chandigarh",
+      "age": 40,
+      "gender": "male",
+      "height": 1.70,
+      "weight": 95.0,
+      "bmi": 32.87,
+      "verdict": "Obese"
+    },
+    "P007": {
+      "id": "P007",
+      "name": "Neha Joshi",
+      "city": "Jaipur",
+      "age": 29,
+      "gender": "female",
+      "height": 1.58,
+      "weight": 60.0,
+      "bmi": 24.03,
+      "verdict": "Normal"
+    },
+    "P008": {
+      "id": "P008",
+      "name": "Amit Roy",
+      "city": "Kolkata",
+      "age": 33,
+      "gender": "male",
+      "height": 1.73,
+      "weight": 69.0,
+      "bmi": 23.05,
+      "verdict": "Normal"
+    },
+    "P009": {
+      "id": "P009",
+      "name": "Meera Nair",
+      "city": "Kochi",
+      "age": 26,
+      "gender": "female",
+      "height": 1.62,
+      "weight": 74.0,
+      "bmi": 28.20,
+      "verdict": "Overweight"
+    },
+    "P010": {
+      "id": "P010",
+      "name": "Rahul Yadav",
+      "city": "Lucknow",
+      "age": 37,
+      "gender": "male",
+      "height": 1.80,
+      "weight": 72.0,
+      "bmi": 22.22,
+      "verdict": "Normal"
+    }
+  }
