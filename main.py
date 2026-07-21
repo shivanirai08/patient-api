@@ -31,6 +31,13 @@ class Patient(BaseModel):
         else :
             return "Obese"
 
+class PatientUpdate(BaseModel) :
+    name : Optional[str, Field(..., description = "Name of the patient")]
+    city : Optional[str, Field(..., description = "City of the patient")]
+    age : Optional[int, Field(..., description = "Age of the patient", gt = 0, lt = 120)]
+    gender : Optional[Literal["male", "female", "others"], Field(..., description = "Gender of the patient")]
+    height : Optional[float, Field(..., description = "Height of the patient in cm", gt = 0, lt = 250)]
+    weight : Optional[float, Field(..., description = "Weight of the patient in kg", gt = 0, lt = 200)]
 
 @app.get("/")
 def home():
@@ -84,3 +91,26 @@ def create_patients(patient : Patient) :
     save_data(data)
     
     return JSONResponse(status_code = 201, content = {"message": "Patient created successfully"})
+
+
+@app.put("/patients/{patient_id}")
+def update_patient(patient_id : str, patient : PatientUpdate) :
+    data = load_patients()
+
+    if patient_id not in data:
+        raise HTTPException(status_code = 404, detail = "Patient not found")
+    
+    data[patient_id].update(patient.model_dump())
+    save_data(data)
+
+    return JSONResponse(status_code = 200, content = {"message": "Patient updated successfully"})
+
+
+@app.delete("/patients/{patient_id}")
+def delete_patient(patient_id : str) :
+    data = load_patients()
+    if patient_id not in data:
+        raise HTTPException(status_code = 404, detail = "Patient not found")
+    del data[patient_id]
+    save_data(data)
+    return JSONResponse(status_code = 200, content = {"message": "Patient deleted successfully"})
