@@ -1,7 +1,9 @@
 from fastapi import FastAPI, HTTPException
 import json
-from pydantic import BaseModel
-from typing import Annotated, Field, computed_field, Literal
+from pydantic import BaseModel, Field, computed_field
+from typing import Annotated, Literal, Optional
+from ml_model import predict
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -12,12 +14,13 @@ class Patient(BaseModel):
     age : Annotated[int, Field(..., description = "Age of the patient", gt = 0, lt = 120)]
     gender : Annotated[Literal["male", "female", "others"], Feild(..., description = "Gender of the patient")]
     height : Annotated[float, Field(..., description = "Height of the patient in cm", gt = 0, lt = 250)]
-    weight : Annotated[float, Field(..., description = "Weight of the patient in kg", gt = 0, lt = 200)]
+    weight : Annotated[float, Field(..., description = "Weight of the patient in kg", gt = 0, lt = 300)]
 
     @computed_field
     @property
     def bmi(self) -> float : 
-        return round(self.weight / (self.height ** 2),2);
+
+        return round(self.weight / ((self.height/100) ** 2),2);
 
     @computed_field
     @property
@@ -32,12 +35,18 @@ class Patient(BaseModel):
             return "Obese"
 
 class PatientUpdate(BaseModel) :
-    name : Optional[str, Field(..., description = "Name of the patient")]
-    city : Optional[str, Field(..., description = "City of the patient")]
-    age : Optional[int, Field(..., description = "Age of the patient", gt = 0, lt = 120)]
-    gender : Optional[Literal["male", "female", "others"], Field(..., description = "Gender of the patient")]
-    height : Optional[float, Field(..., description = "Height of the patient in cm", gt = 0, lt = 250)]
-    weight : Optional[float, Field(..., description = "Weight of the patient in kg", gt = 0, lt = 200)]
+    name : Optional[str] = Field(default = None, description = "Name of the patient")
+    city : Optional[str] = Field(default = None, description = "City of the patient")
+    age : Optional[int] = Field(default = None, description = "Age of the patient", gt = 0, lt = 120)
+    gender : Optional[Literal["male", "female", "others"]] = Field(default = None, description = "Gender of the patient")
+    height : Optional[float] = Field(default = None, description = "Height of the patient in cm", gt = 0, lt = 250)
+    weight : Optional[float] = Field(default = None, description = "Weight of the patient in kg", gt = 0, lt = 300)
+
+class IrisRequest(BaseModel):
+    sepal_length: float
+    sepal_width: float
+    petal_length: float
+    petal_width: float
 
 @app.get("/")
 def home():
@@ -99,8 +108,17 @@ def update_patient(patient_id : str, patient : PatientUpdate) :
 
     if patient_id not in data:
         raise HTTPException(status_code = 404, detail = "Patient not found")
+
+    updated_patient = patient.model_dump(exclude_unset = True)
     
-    data[patient_id].update(patient.model_dump())
+    existing_patient = data[patient_id]
+    existing_patient.update(updated_patient)
+    
+    existing_patient["id"] = patient_id
+    patient_py_obj = Patient(**existing_patient)
+
+    data[patient_id] = patient_py_obj.model_dump()
+
     save_data(data)
 
     return JSONResponse(status_code = 200, content = {"message": "Patient updated successfully"})
@@ -119,13 +137,7 @@ def delete_patient(patient_id : str) :
 
 
 @app.post("/predict")
-def predict(data : IrisRequest) :
-    features = [
-        data.sepal_length,
-        data.sepal_width,
-        data.petal_length,
-        data.petal_width,
-    ]
-    prediction = predict(features)
+def predict(data) :
+    print(data)
 
     return {"prediction": prediction}
