@@ -114,3 +114,18 @@ def delete_patient(patient_id : str) :
     del data[patient_id]
     save_data(data)
     return JSONResponse(status_code = 200, content = {"message": "Patient deleted successfully"})
+
+
+
+
+@app.post("/predict")
+def predict(data : IrisRequest) :
+    features = [
+        data.sepal_length,
+        data.sepal_width,
+        data.petal_length,
+        data.petal_width,
+    ]
+    prediction = predict(features)
+
+    return {"prediction": prediction}
