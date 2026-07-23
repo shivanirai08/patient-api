@@ -107,7 +107,7 @@ def update_patient(patient_id : str, patient : PatientUpdate) :
     data = load_patients()
 
     if patient_id not in data:
-        raise HTTPException(status_code = 404, detail = "Patient not found")
+        raise HTTPException(status_code = 404, detail = "Patient not found") 
 
     updated_patient = patient.model_dump(exclude_unset = True)
     
@@ -137,7 +137,7 @@ def delete_patient(patient_id : str) :
 
 
 @app.post("/predict")
-def predict(data) :
-    print(data)
-
-    return {"prediction": prediction}
+def predict_data(data : IrisRequest) :
+    features = [data.sepal_length, data.sepal_width, data.petal_length, data.petal_width]
+    prediction = predict(features)
+    return JSONResponse(status_code = 200, content = {"prediction": prediction})
